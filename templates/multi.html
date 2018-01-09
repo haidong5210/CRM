@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+</head>
+<body>
+<h1>批量导入客户</h1>
+<a href="/download/">点击下载，按照下载的文件格式添加</a>
+<form method="post" novalidate enctype="multipart/form-data">
+    {% csrf_token %}
+    <p>选择文件<input type="file" name="excl"></p>
+    <p><input type="submit"></p>
+</form>
+</body>
+</html>

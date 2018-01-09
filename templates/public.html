@@ -1,0 +1,35 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
+</head>
+<body>
+{% block content %}
+    <div class="container">
+    <h1>公共客户</h1>
+        <table class="table table-bordered">
+        <tr>
+            <th>客户名</th>
+            <th>之前的客户顾问</th>
+            <th>抢单</th>
+        </tr>
+        {% for customer in customer_set %}
+            <tr>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.consultant.name}}</td>
+                <td><a href="/haidong/app01/customer/{{ customer.id }}/competition/">抢单</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+{% endblock %}
+
+</body>
+</html>

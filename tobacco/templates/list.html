@@ -1,0 +1,96 @@
+{% extends 'index.html' %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+
+    {% block css %}
+        <style>
+        .filterow a{
+            display: inline-block;
+            padding: 3px 6px;
+            border: 1px solid cornsilk;
+            margin: 2px;
+        }
+        .filterow a.active{
+            background-color: blue;
+            color: white;
+        }
+
+    </style>
+    {% endblock %}
+</head>
+<body>
+{% block content %}
+    <div class="container">
+    <h3>列表展示</h3>
+    <div class="filterow">
+    {% if list_view_obj.show_show_comb %}
+         {% for queryset in list_view_obj.combinatorial %}
+                <div>
+                    {% for foo in queryset %}
+                        {{ foo }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+    {% endif %}
+    </div>
+    {% if list_view_obj.is_add %}
+        <div style="margin: 5px 0">
+            <a href="{{ list_view_obj.add_url }}" class="btn btn-success">添加</a>
+        </div>
+    {% endif %}
+    {% if list_view_obj.show_search_input %}
+        <form class="form-inline" method="get" novalidate style="float: right;padding: 5px 0">
+            <div class="form-group">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="请输入搜索条件" name="condition" value="{{ list_view_obj.condition_value }}">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+        </form>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {% if list_view_obj.show_catch %}
+            <select class="form-control" style="width: 200px;display: inline-block" name="list_action">
+                <option value="">请选择</option>
+                {% for catch_dict in list_view_obj.get_catch %}
+                    <option value="{{ catch_dict.name }}">{{ catch_dict.text }}</option>
+                {% endfor %}
+            </select>
+            <input type="submit" class="btn" value="执行">
+        {% endif %}
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    {% for head_name in list_view_obj.head_list %}
+                        <th>{{ head_name }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            {% for model in list_view_obj.data_list %}
+                <tr>
+                    {% for filed in model %}
+                        <td>{{ filed }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+    <div style="margin-left: 35%">
+        {{ list_view_obj.pager_obj.page_html|safe }}
+    </div>
+</div>
+{% endblock %}
+
+
+</body>
+
+</html>

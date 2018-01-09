@@ -1,0 +1,32 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'css/form.css' %}">
+</head>
+<body>
+<div class="container" style="margin: 150px 300px">
+    <h1 style="display: block;margin-left: 150px;padding: 20px">用户登陆</h1>
+    <form method="post" novalidate class="form-horizontal">
+        {% csrf_token %}
+        {% for f in form %}
+                <div class="form-group">
+                 <label for="inputEmail3" class="col-sm-2 control-label">{{ f.label }}</label>
+                    <div class="col-md-4">
+                        {{ f }} <p>{{ f.errors.0 }}</p>
+                    </div>
+                </div>
+        {% endfor %}
+        <p style="position: relative;left: 300px;font-size: 15px;color: red">{{ error.msg }}</p>
+        <div class="col-md-10 col-md-offset-5">
+            <input class="btn-success btn" type="submit" value="登陆">
+        </div>
+    </form>
+</div>
+</body>
+</html>

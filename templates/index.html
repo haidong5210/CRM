@@ -1,0 +1,59 @@
+{% load rbac %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/rbac/rbac.css">
+    <link rel="stylesheet" href="{% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %}">
+        <style>
+        body{
+            margin: 0;
+        }
+        .pg-header{
+            height: 48px;
+            background-color: #2e6da4;
+            color: white;
+        }
+        .content{
+            width: 90%;
+            height: 500px;
+            position: absolute;
+            right: 0;
+            left: 11%;
+            overflow: auto;
+        }
+        {% block css %}
+
+        {% endblock %}
+        </style>
+
+</head>
+<body>
+
+<div class="pg-header">
+        头部菜单
+    </div>
+<div style="float: left;width: 10%;height: 500px;background-color: #bbbbbb;position: absolute;left: 0">
+{#引入自定义的标签#}
+{% menu request %}
+</div>
+
+
+<div class="content">
+    {% block content %}
+        <h1>欢迎{{ request.session.userinfo.name }}</h1>
+    {% endblock %}
+
+</div>
+
+    <script src="/static/jquery3.2.1.js"></script>
+    <script src="/static/rbac/rbac.js"></script>
+{% block js %}
+
+{% endblock %}
+</body>
+</html>

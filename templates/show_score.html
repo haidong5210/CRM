@@ -1,0 +1,88 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <script src="{% static 'jquery3.2.1.js' %}"></script>
+    <script src="{% static 'highcharts.js' %}"></script>
+</head>
+<body>
+    <h1>所在班级</h1>
+    <ul id="uu" sid="{{ sid }}">
+        {% for cls in cls_set %}
+            <li cid="{{ cls.id }}">{{ cls.course }}({{ cls.semester }}期)</li>
+        {% endfor %}
+    </ul>
+    <h1>展示分数</h1>
+    <div id="container" style="width:400px;height:400px"></div>
+    <script>
+        $(function () {
+            $("#uu li").click(function () {
+                var cls_id = $(this).attr("cid");
+                var stu_id = $("#uu").attr("sid");
+                $.ajax({
+                    url:"/haidong/app01/student/dis",
+                    type:"get",
+                    data:{
+                        cls_id:cls_id,
+                        stu_id:stu_id
+                    },
+                    dataType:'json',
+                    success:function (data) {
+                        var dict={
+                                chart: {
+                                    type: 'column'
+                                },
+                                title: {
+                                    text: '分数分布'
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    labels: {
+                                        rotation: -45,
+                                        style: {
+                                            fontSize: '13px',
+                                            fontFamily: 'Verdana, sans-serif'
+                                        }
+                                    }
+                                },
+                                yAxis: {
+                                    min: 0,
+                                    title: {
+                                        text: '分数'
+                                    }
+                                },
+                                legend: {
+                                    enabled: false
+                                },
+                                tooltip: {
+                                    pointFormat: '分数: <b>{point.y} </b>'
+                                },
+                                series: [{
+                                    name: '分数',
+                                    data: data,
+                                    dataLabels: {
+                                        enabled: true,
+                                        rotation: -90,
+                                        color: '#FFFFFF',
+                                        align: 'right',
+                                        format: '{point.y}', // one decimal
+                                        y: 10, // 10 pixels down from the top
+                                        style: {
+                                            fontSize: '13px',
+                                            fontFamily: 'Verdana, sans-serif'
+                                        }
+                                    }
+                                }]
+                            };
+                        $('#container').highcharts(dict)
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>
